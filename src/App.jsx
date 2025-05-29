@@ -1,4 +1,4 @@
-import ProductView from "./componente/productView";
+import ProductView from "./componente/ProductView";
 import { PedidoProvider } from "./pedidoHook/PedidoContext";
 
 function App() {
