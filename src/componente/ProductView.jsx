@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { productosRef } from '../firebase';
+import { productosRef } from '../firebase.js';
 import { getDocs } from 'firebase/firestore';
 import ProductList from './ProductList.jsx';
 import '../estilitos/styleSheet.css'
