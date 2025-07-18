@@ -78,18 +78,19 @@ const ProductList = ({ productos }) => {
                   alt={prod.nombre}
                   className="product-image"
                 />
-                <div className="product-name">{prod.nombre}</div>
-                <p>Precio: ${prod.precio}</p>
+                <div className="product-name" style={{ fontSize: '1rem' }}>{prod.nombre}</div>
+                <p style={{ margin: '0 10px', fontSize: '0.9rem' }}>Precio: ${prod.precio}</p>
               </div>
 
               {sinStock ? (
                 <p className="product-unavailable" style={{ marginLeft: '20px' }}>No hay stock</p>
               ) : (
-                <div className="product-actions">
+                <div className="product-actions" style={{ flexWrap: 'wrap', gap: '8px' }}>
                   <select
                     className="product-input"
                     value={tallesSeleccionados[prod.id] || ""}
                     onChange={(e) => handleTalleChange(prod.id, e.target.value)}
+                    style={{ minWidth: '90px' }}
                   >
                     <option value="">Talle</option>
                     {tallesDisponibles.map((s, i) => (
@@ -108,7 +109,7 @@ const ProductList = ({ productos }) => {
                     value={cantidades[prod.id] || ""}
                     onChange={(e) => handleCantidadChange(prod.id, e.target.value)}
                     disabled={!talleSeleccionado}
-                    style={{ marginLeft: '10px', width: '70px' }}
+                    style={{ width: '80px' }}
                   />
 
                   <button
@@ -119,7 +120,7 @@ const ProductList = ({ productos }) => {
                       !talleSeleccionado ||
                       cantidadSeleccionada > stockTalleSeleccionado
                     }
-                    style={{ marginLeft: '10px' }}
+                    style={{ marginTop: '4px', flexGrow: 1, minWidth: '80px' }}
                   >
                     Añadir
                   </button>
@@ -130,26 +131,24 @@ const ProductList = ({ productos }) => {
         })
       )}
 
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-        <button className="finish-btn" onClick={() => setShowModal(true)}>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
+        <button
+          className="finish-btn"
+          onClick={() => setShowModal(true)}
+          style={{ minWidth: '140px' }}
+        >
           Terminar pedido
         </button>
       </div>
 
-     <>
-  {/* Modal solo cuando se activa */}
-  {showModal && (
-    <div className="modal-overlay" onClick={() => setShowModal(false)}>
-      <div className="modal-content" onClick={e => e.stopPropagation()}>
-        <button className="close-btn" onClick={() => setShowModal(false)}>X</button>
-        <FinishPedido />
-      </div>
-    </div>
-  )}
-</>
-
-
-
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setShowModal(false)}>X</button>
+            <FinishPedido />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

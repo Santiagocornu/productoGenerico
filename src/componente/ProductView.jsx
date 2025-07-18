@@ -17,17 +17,16 @@ const ProductView = () => {
   const [nombre, setNombre] = useState("");
   const [talle, setTalle] = useState("");
 
-  const fetchProduct = async () => {
-    try {
-      const productRaw = await getDocs(productosRef);
-      const productJson = productRaw.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setProductos(productJson);
-    } catch (error) {
-      alert(error);
-    }
-  };
-
   useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const productRaw = await getDocs(productosRef);
+        const productJson = productRaw.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setProductos(productJson);
+      } catch (error) {
+        alert(error);
+      }
+    };
     fetchProduct();
   }, []);
 
@@ -41,65 +40,62 @@ const ProductView = () => {
   });
 
   return (
-  <div className="filtro-contenedor" style={{
-    width: '100%',
-    padding: '20px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    boxSizing: 'border-box'
-  }}>
+    <div className="filtro-contenedor" style={{
+      width: '100%',
+      padding: '16px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      boxSizing: 'border-box',
+      margin: '0 auto'
+    }}>
+      <h2 style={{ marginBottom: '16px', textAlign: 'center', fontSize: '1.5rem' }}>
+        Filtrar productos
+      </h2>
 
-    <h2 style={{ marginBottom: '20px', textAlign: 'center' }}>Filtrar productos</h2>
-
-    <div
-      style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: '15px',
-        justifyContent: 'center',
-        width: '100%',
-        maxWidth: '1000px',
-        marginBottom: '30px',
-        boxSizing: 'border-box',
-        padding: '0 10px'
-      }}
-    >
-      <input
-        className="input-normal"
-        type="text"
-        placeholder="Buscar por nombre"
-        value={nombre}
-        onChange={(e) => setNombre(e.target.value)}
-        style={{ flex: '1 1 250px' }}
-      />
-      <input
-        className="input-normal"
-        type="text"
-        placeholder="Buscar por talle (ej: 38, s, m)"
-        value={talle}
-        onChange={(e) => setTalle(e.target.value)}
-        style={{ flex: '1 1 250px' }}
-      />
-      <select
-        className="input-normal"
-        value={categoria}
-        onChange={(e) => setCategoria(e.target.value)}
-        style={{ flex: '1 1 250px' }}
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '12px',
+          justifyContent: 'center',
+          width: '100%',
+          maxWidth: '500px',
+          marginBottom: '24px',
+          boxSizing: 'border-box'
+        }}
       >
-        <option value="">Todas las categorías</option>
-        {categorias.map((cat, i) => (
-          <option key={i} value={cat}>{cat}</option>
-        ))}
-      </select>
-    </div>
+        <input
+          className="input-normal"
+          type="text"
+          placeholder="Buscar por nombre"
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
+        />
+        <input
+          className="input-normal"
+          type="text"
+          placeholder="Buscar por talle (ej: 38, s, m)"
+          value={talle}
+          onChange={(e) => setTalle(e.target.value)}
+        />
+        <select
+          className="input-normal"
+          value={categoria}
+          onChange={(e) => setCategoria(e.target.value)}
+        >
+          <option value="">Todas las categorías</option>
+          {categorias.map((cat, i) => (
+            <option key={i} value={cat}>{cat}</option>
+          ))}
+        </select>
+      </div>
 
-    <div style={{ width: '100%', maxWidth: '1000px', padding: '0 10px', boxSizing: 'border-box' }}>
-      <ProductList productos={productosFiltrados} />
+      <div style={{ width: '100%', maxWidth: '1000px' }}>
+        <ProductList productos={productosFiltrados} />
+      </div>
     </div>
-  </div>
-);
-
+  );
 };
 
 export default ProductView;
