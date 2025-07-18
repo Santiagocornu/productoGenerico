@@ -41,60 +41,65 @@ const ProductView = () => {
   });
 
   return (
-    <div className="filtro-contenedor" style={{
-      maxWidth: '1000px',
-      margin: '20px auto',
-      width: '95%',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center'
-    }}>
+  <div className="filtro-contenedor" style={{
+    width: '100%',
+    padding: '20px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    boxSizing: 'border-box'
+  }}>
 
-      <h2 style={{ marginBottom: '20px' }}>Filtrar productos</h2>
+    <h2 style={{ marginBottom: '20px', textAlign: 'center' }}>Filtrar productos</h2>
 
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '15px',
-          justifyContent: 'center',
-          width: '100%',
-          maxWidth: '800px',
-          marginBottom: '30px'
-        }}
+    <div
+      style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '15px',
+        justifyContent: 'center',
+        width: '100%',
+        maxWidth: '1000px',
+        marginBottom: '30px',
+        boxSizing: 'border-box',
+        padding: '0 10px'
+      }}
+    >
+      <input
+        className="input-normal"
+        type="text"
+        placeholder="Buscar por nombre"
+        value={nombre}
+        onChange={(e) => setNombre(e.target.value)}
+        style={{ flex: '1 1 250px' }}
+      />
+      <input
+        className="input-normal"
+        type="text"
+        placeholder="Buscar por talle (ej: 38, s, m)"
+        value={talle}
+        onChange={(e) => setTalle(e.target.value)}
+        style={{ flex: '1 1 250px' }}
+      />
+      <select
+        className="input-normal"
+        value={categoria}
+        onChange={(e) => setCategoria(e.target.value)}
+        style={{ flex: '1 1 250px' }}
       >
-        <input
-          className="input-normal"
-          type="text"
-          placeholder="Buscar por nombre"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          style={{ flex: '1 1 250px' }}
-        />
-        <input
-          className="input-normal"
-          type="text"
-          placeholder="Buscar por talle (ej: 38, s, m)"
-          value={talle}
-          onChange={(e) => setTalle(e.target.value)}
-          style={{ flex: '1 1 250px' }}
-        />
-        <select
-          className="input-normal"
-          value={categoria}
-          onChange={(e) => setCategoria(e.target.value)}
-          style={{ flex: '1 1 250px' }}
-        >
-          <option value="">Todas las categorías</option>
-          {categorias.map((cat, i) => (
-            <option key={i} value={cat}>{cat}</option>
-          ))}
-        </select>
-      </div>
+        <option value="">Todas las categorías</option>
+        {categorias.map((cat, i) => (
+          <option key={i} value={cat}>{cat}</option>
+        ))}
+      </select>
+    </div>
 
+    <div style={{ width: '100%', maxWidth: '1000px', padding: '0 10px', boxSizing: 'border-box' }}>
       <ProductList productos={productosFiltrados} />
     </div>
-  );
+  </div>
+);
+
 };
 
 export default ProductView;

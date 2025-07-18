@@ -67,20 +67,22 @@
 }
 
 .finish-btn {
-  margin-top: 20px;
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: none;
-  background-color: #ff1744;
+  background-color: #d90429; /* rojo intenso */
   color: white;
-  cursor: pointer;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
   font-weight: bold;
-  transition: background-color 0.2s;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
+  transition: background 0.3s;
 }
 
 .finish-btn:hover {
-  background-color: #d50000;
+  background-color: #b40322;
 }
+
 
 .modal-overlay {
   position: fixed;

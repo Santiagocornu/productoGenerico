@@ -136,17 +136,19 @@ const ProductList = ({ productos }) => {
         </button>
       </div>
 
-      <>
-  <button className="close-btn" onClick={() => setShowModal(false)}>X</button>
-
+     <>
+  {/* Modal solo cuando se activa */}
   {showModal && (
     <div className="modal-overlay" onClick={() => setShowModal(false)}>
       <div className="modal-content" onClick={e => e.stopPropagation()}>
+        <button className="close-btn" onClick={() => setShowModal(false)}>X</button>
         <FinishPedido />
       </div>
     </div>
   )}
 </>
+
+
 
     </div>
   );
