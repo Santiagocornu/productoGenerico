@@ -42,13 +42,13 @@ const ProductView = () => {
 
   return (
     <div className="filtro-contenedor" style={{
-  maxWidth: '1000px',
-  margin: '20px auto',
-  width: '95%',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center'
-}}>
+      maxWidth: '1000px',
+      margin: '20px auto',
+      width: '95%',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
+    }}>
 
       <h2 style={{ marginBottom: '20px' }}>Filtrar productos</h2>
 
@@ -90,8 +90,6 @@ const ProductView = () => {
             <option key={i} value={cat}>{cat}</option>
           ))}
         </select>
-
-        
       </div>
 
       <ProductList productos={productosFiltrados} />

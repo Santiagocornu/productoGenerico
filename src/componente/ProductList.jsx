@@ -12,13 +12,24 @@ const ProductList = ({ productos }) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleCantidadChange = (id, value) => {
-    // Solo permitir números positivos y que no excedan stock
     const talle = tallesSeleccionados[id];
     const stockSeleccionado = productos.find(p => p.id === id)?.stock?.find(s => s.talle === talle)?.cantidad || 0;
 
-    if (value === '' || (Number(value) > 0 && Number(value) <= stockSeleccionado)) {
-      setCantidades(prev => ({ ...prev, [id]: value }));
+    let valorNum = Number(value);
+
+    if (value === '') {
+      setCantidades(prev => ({ ...prev, [id]: '' }));
+      return;
     }
+
+    if (valorNum < 1) {
+      valorNum = 1;
+    }
+    if (valorNum > stockSeleccionado) {
+      valorNum = stockSeleccionado;
+    }
+
+    setCantidades(prev => ({ ...prev, [id]: valorNum }));
   };
 
   const handleTalleChange = (id, talle) => {
@@ -31,7 +42,6 @@ const ProductList = ({ productos }) => {
     const talle = tallesSeleccionados[producto.id];
     if (!talle || cantidad <= 0) return;
 
-    // Validar stock antes de agregar
     const stockSeleccionado = producto.stock?.find(s => s.talle === talle)?.cantidad || 0;
     if (cantidad > stockSeleccionado) {
       alert(`No hay suficiente stock para el talle ${talle}`);
@@ -50,7 +60,6 @@ const ProductList = ({ productos }) => {
         <p style={{ textAlign: "center", margin: "20px 0", color: "gray" }}>No hay productos</p>
       ) : (
         productos.map(prod => {
-          // talles con stock > 0
           const tallesDisponibles = prod.stock?.filter(s => s.cantidad > 0) || [];
           const stockTotal = prod.stock?.reduce((acc, s) => acc + s.cantidad, 0) || 0;
           const talleSeleccionado = tallesSeleccionados[prod.id];
@@ -93,13 +102,13 @@ const ProductList = ({ productos }) => {
                   <input
                     type="number"
                     min="1"
+                    max={stockTalleSeleccionado}
                     placeholder="Cantidad"
                     className="product-input"
                     value={cantidades[prod.id] || ""}
                     onChange={(e) => handleCantidadChange(prod.id, e.target.value)}
                     disabled={!talleSeleccionado}
-                    style={{ marginLeft: '10px' }}
-                    max={stockTalleSeleccionado}
+                    style={{ marginLeft: '10px', width: '70px' }}
                   />
 
                   <button
@@ -110,6 +119,7 @@ const ProductList = ({ productos }) => {
                       !talleSeleccionado ||
                       cantidadSeleccionada > stockTalleSeleccionado
                     }
+                    style={{ marginLeft: '10px' }}
                   >
                     Añadir
                   </button>
@@ -126,14 +136,18 @@ const ProductList = ({ productos }) => {
         </button>
       </div>
 
-      {showModal && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <button className="close-btn" onClick={() => setShowModal(false)}>X</button>
-            <FinishPedido />
-          </div>
-        </div>
-      )}
+      <>
+  <button className="close-btn" onClick={() => setShowModal(false)}>X</button>
+
+  {showModal && (
+    <div className="modal-overlay" onClick={() => setShowModal(false)}>
+      <div className="modal-content" onClick={e => e.stopPropagation()}>
+        <FinishPedido />
+      </div>
+    </div>
+  )}
+</>
+
     </div>
   );
 };
