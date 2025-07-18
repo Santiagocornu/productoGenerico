@@ -11,26 +11,38 @@ const FinishPedido = () => {
   };
 
   const crearMensaje = () => {
-    if (pedido.length === 0) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'No hay nada añadido',
-        text: 'Por favor, selecciona al menos un producto antes de enviar.',
-      });
-      return;
-    }
-
-    let mensaje = "¡Hola! Quiero hacer el siguiente pedido:\n";
-    pedido.forEach(producto => {
-      const precio = typeof producto.precio === 'number' ? producto.precio : 0;
-      const total = typeof producto.total === 'number' ? producto.total : 0;
-      mensaje += `- ${producto.nombre} (Talle ${producto.talle || '?' }): ${producto.cant || 0} x $${precio.toFixed(2)} = $${total.toFixed(2)}\n`;
+  if (pedido.length === 0) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'No hay nada añadido',
+      text: 'Por favor, selecciona al menos un producto antes de enviar.',
     });
-    mensaje += `\nTotal a pagar: $${calcularTotal().toFixed(2)}`;
+    return;
+  }
 
-    const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, '_blank');
-  };
+  const total = calcularTotal();
+
+  let mensaje = "¡Hola! Quiero hacer el siguiente pedido:\n";
+
+pedido.forEach(producto => {
+  const precio = typeof producto.precio === 'number' ? producto.precio : 0;
+  const total = typeof producto.total === 'number' ? producto.total : 0;
+  const cant = producto.cant && producto.cant > 0 ? producto.cant : null;
+  const talle = producto.talle && producto.talle.trim() !== '' ? producto.talle : null;
+
+  if (!cant) return; // omitimos si no hay cantidad válida
+
+  const talleText = talle ? `(Talle ${talle})` : '';
+  mensaje += `- ${producto.nombre} ${talleText}: ${cant} x $${precio.toFixed(2)} = $${total.toFixed(2)}\n`;
+});
+
+mensaje += `\nTotal a pagar: $${calcularTotal().toFixed(2)}`;
+
+
+  const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+  window.open(url, '_blank');
+};
+
 
   const styles = {
     container: {
