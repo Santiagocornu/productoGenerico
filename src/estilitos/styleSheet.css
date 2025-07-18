@@ -1,17 +1,41 @@
-.button-normal {
-  background-color: #f5f5f5;      
-  color: #333;                
-  border: 2px solid #bbb;          
-  border-radius: 999px;          
-  padding: 8px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); 
+/* Fondo y layout general */
+body {
+  background-color: #121212;
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-.button-normal:hover {
-  background-color: #e0e0e0;       
-  border-color: #888;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+.input-normal {
+  padding: 10px 12px;
+  border: 1px solid #b00020;
+  background-color: #1e1e1e;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
+.input-normal::placeholder {
+  color: #aaa;
+}
+
+.input-normal:focus {
+  border-color: #ff1744;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 23, 68, 0.25);
+}
+
+/* Contenedor principal de filtros */
+.filtro-contenedor {
+  background-color: #1e1e1e;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+}
+
+/* Opcional: estilos para h2 */
+h2 {
+  color: #ff5252;
 }

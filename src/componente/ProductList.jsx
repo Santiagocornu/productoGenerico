@@ -5,68 +5,126 @@ import '../estilitos/styleSheet.css';
 import '../estilitos/ProductList.css';
 import defaultImage from '../assets/Image-not-found.png';
 
-const ProductList = ({ filter, productos }) => {
+const ProductList = ({ productos }) => {
   const { addProduct } = usePedido();
   const [cantidades, setCantidades] = useState({});
+  const [tallesSeleccionados, setTallesSeleccionados] = useState({});
   const [showModal, setShowModal] = useState(false);
 
   const handleCantidadChange = (id, value) => {
-    setCantidades(prev => ({ ...prev, [id]: value }));
+    // Solo permitir números positivos y que no excedan stock
+    const talle = tallesSeleccionados[id];
+    const stockSeleccionado = productos.find(p => p.id === id)?.stock?.find(s => s.talle === talle)?.cantidad || 0;
+
+    if (value === '' || (Number(value) > 0 && Number(value) <= stockSeleccionado)) {
+      setCantidades(prev => ({ ...prev, [id]: value }));
+    }
   };
 
-  const handleAdd = (id, nombre, precioKG) => {
-    const cantidad = Number(cantidades[id]);
-    addProduct(cantidad, nombre, precioKG);
-    setCantidades(prev => ({ ...prev, [id]: "" }));
+  const handleTalleChange = (id, talle) => {
+    setTallesSeleccionados(prev => ({ ...prev, [id]: talle }));
+    setCantidades(prev => ({ ...prev, [id]: '' })); // reset cantidad cuando cambia talle
+  };
+
+  const handleAdd = (producto) => {
+    const cantidad = Number(cantidades[producto.id]);
+    const talle = tallesSeleccionados[producto.id];
+    if (!talle || cantidad <= 0) return;
+
+    // Validar stock antes de agregar
+    const stockSeleccionado = producto.stock?.find(s => s.talle === talle)?.cantidad || 0;
+    if (cantidad > stockSeleccionado) {
+      alert(`No hay suficiente stock para el talle ${talle}`);
+      return;
+    }
+
+    const nombreConTalle = `${producto.nombre} (Talle: ${talle})`;
+    addProduct(cantidad, nombreConTalle, producto.precio, talle);
+    setCantidades(prev => ({ ...prev, [producto.id]: "" }));
+    setTallesSeleccionados(prev => ({ ...prev, [producto.id]: "" }));
   };
 
   return (
     <div>
-      {productos.filter(prod => (filter === "" || prod.categoria === filter)).length === 0 ? (
+      {productos.length === 0 ? (
         <p style={{ textAlign: "center", margin: "20px 0", color: "gray" }}>No hay productos</p>
       ) : (
-        productos
-          .filter(prod => (filter === "" || prod.categoria === filter))
-          .map(prod => (
-            <div key={prod.id} className="product-card">
+        productos.map(prod => {
+          // talles con stock > 0
+          const tallesDisponibles = prod.stock?.filter(s => s.cantidad > 0) || [];
+          const stockTotal = prod.stock?.reduce((acc, s) => acc + s.cantidad, 0) || 0;
+          const talleSeleccionado = tallesSeleccionados[prod.id];
+          const stockTalleSeleccionado = talleSeleccionado
+            ? prod.stock.find(s => s.talle === talleSeleccionado)?.cantidad || 0
+            : 0;
+          const cantidadSeleccionada = Number(cantidades[prod.id]) || 0;
+
+          const sinStock = stockTotal === 0;
+
+          return (
+            <div key={prod.id} className="product-card" style={{ opacity: sinStock ? 0.5 : 1, pointerEvents: sinStock ? 'none' : 'auto' }}>
               <div className="product-info">
                 <img
-                  src={prod.img || defaultImage}
+                  src={prod.thumbnail || defaultImage}
                   alt={prod.nombre}
                   className="product-image"
                 />
                 <div className="product-name">{prod.nombre}</div>
-                <p>KG: ${prod.precioKG}</p>
-
+                <p>Precio: ${prod.precio}</p>
               </div>
-              {prod.estado ? (
+
+              {sinStock ? (
+                <p className="product-unavailable" style={{ marginLeft: '20px' }}>No hay stock</p>
+              ) : (
                 <div className="product-actions">
+                  <select
+                    className="product-input"
+                    value={tallesSeleccionados[prod.id] || ""}
+                    onChange={(e) => handleTalleChange(prod.id, e.target.value)}
+                  >
+                    <option value="">Talle</option>
+                    {tallesDisponibles.map((s, i) => (
+                      <option key={i} value={s.talle}>
+                        {s.talle} ({s.cantidad} disp.)
+                      </option>
+                    ))}
+                  </select>
+
                   <input
                     type="number"
-                    min="0"
-                    value={cantidades[prod.id] || ""}
+                    min="1"
+                    placeholder="Cantidad"
                     className="product-input"
-                    placeholder="KG"
+                    value={cantidades[prod.id] || ""}
                     onChange={(e) => handleCantidadChange(prod.id, e.target.value)}
+                    disabled={!talleSeleccionado}
                     style={{ marginLeft: '10px' }}
+                    max={stockTalleSeleccionado}
                   />
+
                   <button
                     className="button-normal"
-                    onClick={() => handleAdd(prod.id, prod.nombre, prod.precioKG)}
+                    onClick={() => handleAdd(prod)}
+                    disabled={
+                      !cantidadSeleccionada ||
+                      !talleSeleccionado ||
+                      cantidadSeleccionada > stockTalleSeleccionado
+                    }
                   >
                     Añadir
                   </button>
                 </div>
-              ) : (
-                <p className="product-unavailable">No hay</p>
               )}
             </div>
-          ))
+          );
+        })
       )}
 
-      <button className="finish-btn" onClick={() => setShowModal(true)}>
-        Terminar pedido
-      </button>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
+        <button className="finish-btn" onClick={() => setShowModal(true)}>
+          Terminar pedido
+        </button>
+      </div>
 
       {showModal && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>

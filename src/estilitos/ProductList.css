@@ -1,12 +1,14 @@
 .product-card {
-  background-color: #eaeaea;
+  background-color: #1e1e1e;
   padding: 15px;
   margin-bottom: 12px;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(255, 0, 0, 0.15);
+  border: 1px solid #b00020;
+  color: #fff;
 }
 
 .product-info {
@@ -21,7 +23,7 @@
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  border: 1px solid #ccc;
+  border: 1px solid #b00020;
 }
 
 .product-actions {
@@ -34,28 +36,34 @@
   width: 70px;
   padding: 5px;
   border-radius: 4px;
-  border: 1px solid #bbb;
-  background-color: #f4f4f4;
-  color: #333;
+  border: 1px solid #b00020;
+  background-color: #121212;
+  color: #fff;
 }
 
-.product-add {
+.product-input::placeholder {
+  color: #aaa;
+}
+
+.button-normal {
   padding: 7px 12px;
   border-radius: 6px;
   border: none;
-  background-color: #666;
+  background-color: #ff1744;
   color: white;
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.2s;
 }
-.product-add:hover {
-  background-color: #555;
+
+.button-normal:hover {
+  background-color: #d50000;
 }
 
 .product-unavailable {
   margin-left: 20px;
-  color: #b00;
+  color: #ff5252;
+  font-style: italic;
 }
 
 .finish-btn {
@@ -63,14 +71,15 @@
   padding: 10px 20px;
   border-radius: 8px;
   border: none;
-  background-color: #444;
+  background-color: #ff1744;
   color: white;
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.2s;
 }
+
 .finish-btn:hover {
-  background-color: #333;
+  background-color: #d50000;
 }
 
 .modal-overlay {
@@ -79,21 +88,22 @@
   right: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: flex-end;
   z-index: 1000;
 }
 
 .modal-content {
-  background: #f2f2f2;
+  background: #1e1e1e;
   width: 400px;
   height: 100%;
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: -2px 0 12px rgba(255, 0, 0, 0.25);
   padding: 20px;
   transform: translateX(100%);
   animation: slideIn 0.3s forwards;
   position: relative;
+  color: #fff;
 }
 
 @keyframes slideIn {
@@ -106,7 +116,7 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background: #888;
+  background: #b00020;
   color: white;
   border: none;
   border-radius: 4px;
@@ -114,5 +124,5 @@
   cursor: pointer;
 }
 .close-btn:hover {
-  background: #666;
+  background: #ff1744;
 }

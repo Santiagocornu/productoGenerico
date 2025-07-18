@@ -4,10 +4,10 @@ import { usePedido } from '../pedidoHook/PedidoContext';
 
 const FinishPedido = () => {
   const { pedido, eliminarProducto } = usePedido();
-  const numero = '5492996101047';
+  const numero = '5492995188374'; // Número de WhatsApp destino
 
   const calcularTotal = () => {
-    return pedido.reduce((suma, prod) => suma + prod.total, 0);
+    return pedido.reduce((suma, prod) => suma + (typeof prod.total === 'number' ? prod.total : 0), 0);
   };
 
   const crearMensaje = () => {
@@ -20,9 +20,11 @@ const FinishPedido = () => {
       return;
     }
 
-    let mensaje = "Hola! Quiero hacer este pedido:\n";
+    let mensaje = "¡Hola! Quiero hacer el siguiente pedido:\n";
     pedido.forEach(producto => {
-      mensaje += `- ${producto.nombre}: ${producto.cant}KG - $${producto.total.toFixed(2)}\n`;
+      const precio = typeof producto.precio === 'number' ? producto.precio : 0;
+      const total = typeof producto.total === 'number' ? producto.total : 0;
+      mensaje += `- ${producto.nombre} (Talle ${producto.talle || '?' }): ${producto.cant || 0} x $${precio.toFixed(2)} = $${total.toFixed(2)}\n`;
     });
     mensaje += `\nTotal a pagar: $${calcularTotal().toFixed(2)}`;
 
@@ -34,14 +36,21 @@ const FinishPedido = () => {
     container: {
       padding: '20px',
       fontFamily: 'sans-serif',
+      backgroundColor: '#121212', // fondo negro oscuro
+      color: '#eee', // texto claro
+      borderRadius: '12px',
+      boxShadow: '0 0 10px rgba(255, 0, 0, 0.6)', // sombra roja
     },
     titulo: {
       textAlign: 'center',
       marginBottom: '15px',
+      color: '#ff4444', // rojo brillante
+      fontWeight: 'bold',
+      textShadow: '0 0 5px #ff4444',
     },
     empty: {
       textAlign: 'center',
-      color: 'gray',
+      color: '#aaa',
       fontStyle: 'italic',
     },
     lista: {
@@ -53,41 +62,50 @@ const FinishPedido = () => {
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      backgroundColor: '#f7f7f7',
+      backgroundColor: '#1f1f1f',
       padding: '8px 12px',
       borderRadius: '8px',
-      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+      boxShadow: '0 1px 4px rgba(255, 0, 0, 0.3)', // sombra roja suave
+      color: '#eee',
     },
     span: {
       flex: 1,
       textAlign: 'center',
     },
     eliminar: {
-      backgroundColor: '#ff4d4d',
+      backgroundColor: '#d32f2f',
       color: 'white',
       border: 'none',
       padding: '4px 8px',
       borderRadius: '4px',
       cursor: 'pointer',
-    },
-    eliminarHover: {
-      backgroundColor: '#e63939',
+      fontWeight: 'bold',
+      transition: 'background-color 0.3s',
     },
     total: {
       textAlign: 'center',
-      fontSize: '1.1em',
+      fontSize: '1.2em',
       margin: '15px 0',
+      fontWeight: 'bold',
+      color: '#ff5555',
+      textShadow: '0 0 8px #ff5555',
     },
     botonContainer: {
-      textAlign: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      marginTop: '20px',
     },
     boton: {
-      backgroundColor: '#4CAF50',
+      backgroundColor: '#d32f2f', // rojo fuerte
       color: 'white',
       border: 'none',
-      padding: '10px 20px',
-      borderRadius: '6px',
+      padding: '12px 24px',
+      borderRadius: '8px',
       cursor: 'pointer',
+      fontWeight: 'bold',
+      fontSize: '1em',
+      boxShadow: '0 0 12px #d32f2f',
+      transition: 'background-color 0.3s, box-shadow 0.3s',
     },
   };
 
@@ -100,13 +118,13 @@ const FinishPedido = () => {
       ) : (
         <div style={styles.lista}>
           {pedido.map((producto) => (
-            <div key={producto.nombre} style={styles.item}>
-              <span style={styles.span}>{producto.nombre}</span>
-              <span style={styles.span}>{producto.cant}KG</span>
-              <span style={styles.span}>${producto.total.toFixed(2)}</span>
+            <div key={producto.nombre + producto.talle} style={styles.item}>
+              <span style={styles.span}>{producto.nombre} (Talle {producto.talle || '?'})</span>
+              <span style={styles.span}>x{producto.cant || 0}</span>
+              <span style={styles.span}>${(typeof producto.total === 'number' ? producto.total : 0).toFixed(2)}</span>
               <button
                 style={styles.eliminar}
-                onClick={() => eliminarProducto(producto.nombre)}
+                onClick={() => eliminarProducto(producto.nombre, producto.talle)}
                 title="Eliminar producto"
               >
                 X
@@ -116,13 +134,18 @@ const FinishPedido = () => {
         </div>
       )}
 
-      <hr style={{ margin: '15px 0' }} />
+      <hr style={{ margin: '15px 0', borderColor: '#ff4444' }} />
       <p style={styles.total}>
-        <strong>Total a pagar:</strong> ${calcularTotal().toFixed(2)} (el precio puede cambiar)
+        <strong>Total a pagar:</strong> ${calcularTotal().toFixed(2)}
       </p>
 
       <div style={styles.botonContainer}>
-        <button style={styles.boton} onClick={crearMensaje}>
+        <button
+          style={styles.boton}
+          onClick={crearMensaje}
+          onMouseEnter={e => e.currentTarget.style.backgroundColor = '#a52727'}
+          onMouseLeave={e => e.currentTarget.style.backgroundColor = '#d32f2f'}
+        >
           Enviar por WhatsApp
         </button>
       </div>
