@@ -52,10 +52,14 @@ const ProductView = () => {
         }}
       >
         <button className="button-normal" onClick={() => setFilter("")}>Todo</button>
-        <button className="button-normal" onClick={() => setFilter("milanesa")}>Milanesas</button>
-        <button className="button-normal" onClick={() => setFilter("hamburguesa")}>Hamburguesas</button>
-        <button className="button-normal" onClick={() => setFilter("marisco")}>Mariscos</button>
-        <button className="button-normal" onClick={() => setFilter("pollo")}>Pollos</button>
+        <button className="button-normal" onClick={() => setFilter("surtido hofu")}>Surtido hofu</button>
+        <button className="button-normal" onClick={() => setFilter("surtido salmon")}>Surtido salmon</button>
+        <button className="button-normal" onClick={() => setFilter("surtido veggie")}>Surtido veggie</button>
+        <button className="button-normal" onClick={() => setFilter("surtido cooked")}>Surtido cooked</button>
+        <button className="button-normal" onClick={() => setFilter("tradicional")}>tradicional</button>
+        <button className="button-normal" onClick={() => setFilter("hot rolls")}>Hot rolls</button>
+        <button className="button-normal" onClick={() => setFilter("poke bowl")}>Poke bowl</button>
+        <button className="button-normal" onClick={() => setFilter("hot")}>Hot</button>
         <button className="button-normal" onClick={() => setFilter("otro")}>otros</button>
       </div>
       <div>

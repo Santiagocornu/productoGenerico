@@ -22,7 +22,7 @@ const FinishPedido = () => {
 
     let mensaje = "Hola! Quiero hacer este pedido:\n";
     pedido.forEach(producto => {
-      mensaje += `- ${producto.nombre}: ${producto.cant}KG - $${producto.total.toFixed(2)}\n`;
+      mensaje += `- ${producto.nombre}: ${producto.cant} - $${producto.total.toFixed(2)}\n`;
     });
     mensaje += `\nTotal a pagar: $${calcularTotal().toFixed(2)}`;
 
@@ -102,7 +102,7 @@ const FinishPedido = () => {
           {pedido.map((producto) => (
             <div key={producto.nombre} style={styles.item}>
               <span style={styles.span}>{producto.nombre}</span>
-              <span style={styles.span}>{producto.cant}KG</span>
+              <span style={styles.span}>{producto.cant}</span>
               <span style={styles.span}>${producto.total.toFixed(2)}</span>
               <button
                 style={styles.eliminar}

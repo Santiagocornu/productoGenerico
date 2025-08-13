@@ -14,9 +14,9 @@ const ProductList = ({ filter, productos }) => {
     setCantidades(prev => ({ ...prev, [id]: value }));
   };
 
-  const handleAdd = (id, nombre, precioKG) => {
+  const handleAdd = (id, nombre, precio) => {
     const cantidad = Number(cantidades[id]);
-    addProduct(cantidad, nombre, precioKG);
+    addProduct(cantidad, nombre, precio);
     setCantidades(prev => ({ ...prev, [id]: "" }));
   };
 
@@ -36,7 +36,7 @@ const ProductList = ({ filter, productos }) => {
                   className="product-image"
                 />
                 <div className="product-name">{prod.nombre}</div>
-                <p>KG: ${prod.precioKG}</p>
+                <p> ${prod.precio}</p>
 
               </div>
               {prod.estado ? (
@@ -44,15 +44,16 @@ const ProductList = ({ filter, productos }) => {
                   <input
                     type="number"
                     min="0"
+                    step="1"
                     value={cantidades[prod.id] || ""}
                     className="product-input"
-                    placeholder="KG"
+                    placeholder="precio"
                     onChange={(e) => handleCantidadChange(prod.id, e.target.value)}
                     style={{ marginLeft: '10px' }}
                   />
                   <button
                     className="button-normal"
-                    onClick={() => handleAdd(prod.id, prod.nombre, prod.precioKG)}
+                    onClick={() => handleAdd(prod.id, prod.nombre, prod.precio)}
                   >
                     Añadir
                   </button>
