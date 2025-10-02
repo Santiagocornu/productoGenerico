@@ -4,7 +4,7 @@ import { usePedido } from '../pedidoHook/PedidoContext';
 
 const FinishPedido = () => {
   const { pedido, eliminarProducto } = usePedido();
-  const numero = '5492996101047';
+  const numero = '5492996096397';
 
   const calcularTotal = () => {
     return pedido.reduce((suma, prod) => suma + prod.total, 0);
